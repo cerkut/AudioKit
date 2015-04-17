@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 AudioKit. All rights reserved.
 //
 
+import CoreMotion // Adding tilt parameters
+var motionManager = CMMotionManager()
+var destX:CGFloat  = 0.0
+var destY:CGFloat  = 0.0
 
 class SynthesisViewController: UIViewController {
     
@@ -20,6 +24,19 @@ class SynthesisViewController: UIViewController {
         // Do any additional setup after loading the vFMSynthesizeriew, typically from a nib.
         AKOrchestra.addInstrument(tambourine)
         AKOrchestra.addInstrument(fmSynthesizer)
+        
+        // Adding CMMotionManager
+        if motionManager.accelerometerAvailable == true {
+            motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
+                data, error in
+                
+                destX = CGFloat((0.5*data.acceleration.y + 0.5)*4000)
+                destY = CGFloat((0.5*data.acceleration.y + 0.5)*0.25)
+                
+            })
+            
+        }
+        
     }
     
     override func canBecomeFirstResponder() -> Bool {
@@ -43,8 +60,8 @@ class SynthesisViewController: UIViewController {
     
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
         if motion == .MotionShake {
-            let intensity = Float(2000)
-            let dampingFactor = Float(0.25)
+            let intensity = Float(destX)
+            let dampingFactor = Float(destY)
             
             let note = TambourineNote(intensity: intensity, dampingFactor: dampingFactor)
             tambourine.playNote(note)
