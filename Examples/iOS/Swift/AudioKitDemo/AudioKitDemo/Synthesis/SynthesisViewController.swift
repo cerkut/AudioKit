@@ -21,8 +21,12 @@ class SynthesisViewController: UIViewController {
         AKOrchestra.addInstrument(tambourine)
         AKOrchestra.addInstrument(fmSynthesizer)
     }
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
 
-
+ 
     @IBAction func tapTambourine(sender: UITapGestureRecognizer) {
         
         let touchPoint = sender.locationInView(tambourineTouchView)
@@ -36,6 +40,16 @@ class SynthesisViewController: UIViewController {
         tambourine.playNote(note)
     }
     
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
+        if motion == .MotionShake {
+            let intensity = Float(random)
+            let dampingFactor = Float(0.25)
+            
+            let note = TambourineNote(intensity: intensity, dampingFactor: dampingFactor)
+            tambourine.playNote(note)
+        }
+    }
     @IBAction func tapFMOscillator(sender: UITapGestureRecognizer) {
         
         let touchPoint = sender.locationInView(fmSynthesizerTouchView)
