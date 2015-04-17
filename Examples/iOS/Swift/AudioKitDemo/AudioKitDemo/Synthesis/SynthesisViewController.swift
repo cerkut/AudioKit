@@ -43,7 +43,7 @@ class SynthesisViewController: UIViewController {
     
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
         if motion == .MotionShake {
-            let intensity = Float(random)
+            let intensity = Float(2000)
             let dampingFactor = Float(0.25)
             
             let note = TambourineNote(intensity: intensity, dampingFactor: dampingFactor)
