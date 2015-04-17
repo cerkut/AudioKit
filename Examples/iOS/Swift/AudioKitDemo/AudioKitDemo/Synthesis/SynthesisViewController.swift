@@ -8,6 +8,7 @@
 
 import CoreMotion // Adding tilt parameters
 var motionManager = CMMotionManager()
+
 var destX:CGFloat  = 0.0
 var destY:CGFloat  = 0.0
 
@@ -29,9 +30,12 @@ class SynthesisViewController: UIViewController {
         if motionManager.accelerometerAvailable == true {
             motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
                 data, error in
+  
+                destX = CGFloat((0.5*data.acceleration.x + 0.5)*1)
+                destY = CGFloat((0.5*data.acceleration.y + 0.5)*1)
                 
-                destX = CGFloat((0.5*data.acceleration.y + 0.5)*4000)
-                destY = CGFloat((0.5*data.acceleration.y + 0.5)*0.25)
+                // Check mapping
+                println("Acc-X: \(destX), Y: \(destY)")
                 
             })
             
@@ -57,7 +61,6 @@ class SynthesisViewController: UIViewController {
         tambourine.playNote(note)
     }
     
-    
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
         if motion == .MotionShake {
             let intensity = Float(destX)
@@ -73,8 +76,8 @@ class SynthesisViewController: UIViewController {
         let scaledX = touchPoint.x / fmSynthesizerTouchView.bounds.size.height
         let scaledY = 1.0 - touchPoint.y / fmSynthesizerTouchView.bounds.size.height
         
-        let frequency = Float(scaledY*400)
-        let color = Float(scaledX)
+        let frequency = Float(destY*400)
+        let color = Float(destX)
         
         let note = FMSynthesizerNote(frequency: frequency, color: color)
         fmSynthesizer.playNote(note)
