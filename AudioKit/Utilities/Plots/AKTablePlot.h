@@ -13,11 +13,16 @@
 IB_DESIGNABLE
 @interface AKTablePlot : AKPlotView
 
-/// Creates the table plot
-/// @param frame Bounding frame for the plot
-/// @param table Table to plot
-- (instancetype)initWithFrame:(CGRect)frame table:(AKTable *)table;
+#if TARGET_OS_IPHONE
+@property (nonnull) IBInspectable UIColor *lineColor;
+#else
+@property (nonnull) IBInspectable NSColor *lineColor;
+#endif
+@property IBInspectable CGFloat lineWidth;
 
-@property AKTable *table;
+/// Defaults to 0.9
+@property IBInspectable float scalingFactor;
+
+@property (nonatomic, nullable) AKTable *table;
 
 @end

@@ -8,13 +8,15 @@
 
 import Foundation
 
+let testDuration: Float = 2.0
+
 class Instrument : AKInstrument {
 
     override init() {
         super.init()
 
         let envelope = AKLinearEnvelope()
-        enableParameterLog("Envelope value = ", parameter: envelope, timeInterval:0.02)
+        enableParameterLog("Envelope.floatValue = ", parameter: envelope, timeInterval:0.02)
 
         let oscillator = AKOscillator()
         oscillator.amplitude = envelope
@@ -23,16 +25,14 @@ class Instrument : AKInstrument {
     }
 }
 
-AKOrchestra.testForDuration(2)
+AKOrchestra.testForDuration(testDuration)
 
 let instrument = Instrument()
 AKOrchestra.addInstrument(instrument)
 
 let note = AKNote()
-note.duration.value = 1
+note.duration.floatValue = 1
 
 instrument.playNote(note)
 
-let manager = AKManager.sharedManager()
-while(manager.isRunning) {} //do nothing
-println("Test complete!")
+NSThread.sleepForTimeInterval(NSTimeInterval(testDuration))

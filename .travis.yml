@@ -1,0 +1,4 @@
+language: objective-c
+script:
+- cd Tests/
+- ./run.sh ./Tests/Math.swift

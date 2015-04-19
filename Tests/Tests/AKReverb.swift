@@ -24,6 +24,7 @@ class Instrument : AKInstrument {
         assignOutput(auxilliaryOutput, to:audio)
     }
 }
+
 class Processor : AKInstrument {
 
     init(audioSource: AKStereoAudio) {
@@ -85,6 +86,4 @@ processor.play()
 instrument.play()
 
 
-let manager = AKManager.sharedManager()
-while(manager.isRunning) {} //do nothing
-println("Test complete!")
+NSThread.sleepForTimeInterval(NSTimeInterval(testDuration))
