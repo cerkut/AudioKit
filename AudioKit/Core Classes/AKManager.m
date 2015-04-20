@@ -283,7 +283,6 @@ static AKManager *_sharedManager = nil;
 {
     if (_isLogging) NSLog(@"Stopping Csound");
     [self.engine stop];
-    while(_isRunning) {} // Do nothing
 }
 
 - (void)triggerEvent:(AKEvent *)event
@@ -367,12 +366,12 @@ static AKManager *_sharedManager = nil;
 
 + (void)addBinding:(id)binding
 {
-    [[[self sharedManager] engine] addBinding:binding];
+    [[self sharedManager].engine addBinding:binding];
 }
 
 + (void)removeBinding:(id)binding
 {
-    [[[self sharedManager] engine] removeBinding:binding];
+    [[self sharedManager].engine removeBinding:binding];
 }
 
 @end
